@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="game-title">Loading...</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #000;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .game-details {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .game-details img {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .game-details h1 {
+            font-size: 36px;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .game-details p {
+            font-size: 16px;
+            color: #bbb;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .price {
+            font-size: 24px;
+            font-weight: bold;
+            color: #28a745;
+            margin-bottom: 20px;
+        }
+
+        .download-btn {
+            padding: 15px 25px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 18px;
+            display: inline-block;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .download-btn:hover {
+            background-color: #218838;
+            transform: scale(1.05);
+        }
+
+        .back-btn {
+            padding: 12px 25px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 16px;
+            margin-top: 20px;
+            display: inline-block;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="game-details">
+        <img id="game-image" src="" alt="Game Image">
+        <h1 id="game-title">Loading...</h1>
+        <p id="game-description">Loading...</p>
+        <p id="game-price" class="price">Loading...</p>
+        <a id="game-download" href="" class="download-btn" target="_blank">
+            <i class="fas fa-download"></i> Download Game
+        </a>
+        <br>
+        <a href="{% url 'game_list' %}" class="back-btn">Back to Game List</a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const gameId = "{{ game_id }}"; 
+
+            fetch(`/game_card/${gameId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        
+                        document.getElementById('game-title').innerText = data.title;
+                        document.getElementById('game-description').innerText = data.description;
+                        document.getElementById('game-price').innerText = `$${data.price}`;
+                        document.getElementById('game-image').src = data.imageUrl || '/path/to/default/image.jpg';
+                        document.getElementById('game-download').href = data.downloadUrl || '#';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching game data:', error);
+                    alert('Failed to load game data.');
+                });
+        });
+    </script>
+</body>
+</html>

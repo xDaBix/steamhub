@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Payment</title>
+</head>
+<body>
+    <h2>Pay for Game</h2>
+    <form action="{% url 'create_payment' game.game_id %}" method="POST">
+        {% csrf_token %}
+        <button type="submit">Pay Now</button>
+    </form>
+
+    <a href="{% url 'home' %}">
+        <button type="button">Home</button>
+    </a>
+</body>
+</html>

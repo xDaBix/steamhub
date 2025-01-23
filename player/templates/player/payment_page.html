@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment for {{ game.title }}</title>
+</head>
+<body>
+    <h1>Payment for {{ game.title }}</h1>
+    <p>Price: ₹{{ game.price }}</p>
+
+    <!-- Razorpay Payment Button -->
+    <button id="pay-btn">Pay Now</button>
+
+    <a href="{% url 'home' %}">
+        <button type="button">Home</button>
+    </a>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        document.getElementById("pay-btn").onclick = function() {
+            var options = {
+                "key": "{{ key_id }}",  // Razorpay API Key (pass from backend)
+                "amount": "{{ amount }}",  // Amount in paise (pass from backend, e.g., 500 for ₹5)
+                "currency": "INR",  // Currency
+                "name": "{{ game.title }}",  // Game name
+                "description": "Purchase for {{ game.title }}",  // Description
+                "image": "{{ game.images.first.image.url }}",  // Optional game image for Razorpay checkout modal
+                "order_id": "{{ order_id }}",  // Razorpay order ID (pass from backend)
+                
+                // Success handler
+                "handler": function (response) {
+                    alert("Payment successful! Payment ID: " + response.razorpay_payment_id);
+                    
+                    // Prepare form data to send to your backend for payment verification
+                    var formData = new FormData();
+                    formData.append('razorpay_payment_id', response.razorpay_payment_id);
+                    formData.append('razorpay_order_id', response.razorpay_order_id);
+                    formData.append('razorpay_signature', response.razorpay_signature);
+
+                    // Send payment verification details to the backend
+                    fetch("{% url 'payment_success' %}", {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Redirect to library page or a success page after successful payment and library update
+                            window.location.href = '/library';  // Redirect to the user's library
+                        } else {
+                            alert('Payment verification failed');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error during payment verification:', error);
+                        alert('An error occurred during payment verification');
+                    });
+                },
+
+                // Prefill user information
+                "prefill": {
+                    "name": "{{ request.user.get_full_name }}",  // Use full name if available
+                    "email": "{{ request.user.email }}",  // Email
+                    "contact": "{{ request.user.contact }}"  // Contact number (check your model)
+                },
+
+                // Razorpay theme options
+                "theme": {
+                    "color": "#F37254"
+                }
+            };
+
+            var rzp1 = new Razorpay(options);
+            rzp1.open();
+        };
+    </script>
+</body>
+</html>

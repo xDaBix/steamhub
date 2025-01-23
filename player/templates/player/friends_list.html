@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Search and Friend Requests</title>
+    <style>
+        /* Basic styling for the page */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+        }
+
+        /* Form Styling */
+        form {
+            margin-bottom: 30px;
+        }
+
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Search Results Styling */
+        #search-results {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+        }
+
+        /* Friend Request Styling */
+        h3 {
+            font-size: 20px;
+            color: #333;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #fff;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .action-buttons button {
+            margin-left: 10px;
+        }
+
+        /* Alert Styling */
+        .alert {
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #f8d7da;
+            color: #721c24;
+            border-radius: 5px;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Search for Players and Manage Friend Requests</h1>
+
+        <!-- Search Player Form -->
+        <form id="search-form">
+            <input type="text" id="username" name="username" placeholder="Enter username" required>
+            <button type="submit">Search</button>
+        </form>
+
+        <!-- Search Results Display -->
+        <div id="search-results">
+            {% if players %}
+                <h3>Search Results</h3>
+                <ul>
+                    {% for player_data in players %}
+                        <li>
+                            <span>{{ player_data.player.username }}</span>
+                            <div class="action-buttons">
+                                {% if player_data.can_add %}
+                                    <button onclick="sendFriendRequest('{{ player_data.player.username }}')">Add</button>
+                                {% else %}
+                                    <button disabled>{{ player_data.status|capfirst }}</button>
+                                {% endif %}
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No players found.</p>
+            {% endif %}
+        </div>
+
+        <!-- Pending Friend Requests -->
+        <h3>Pending Friend Requests</h3>
+        <ul id="pending-requests-list">
+            <!-- Dynamically filled with pending requests -->
+            {% for request in pending_requests %}
+            <li>
+                <span>{{ request.player1.username }}</span>
+                <div class="action-buttons">
+                    <button onclick="acceptRequest('{{ request.player1.username }}')">Accept</button>
+                    <button onclick="rejectRequest('{{ request.player1.username }}')">Reject</button>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <script>
+        // Handle the search functionality
+        document.getElementById('search-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+
+            fetch(`/search_players/?query=${username}`)
+                .then(response => response.json())
+                .then(data => {
+                    const searchResults = document.getElementById('search-results');
+                    if (data.error) {
+                        searchResults.innerHTML = `<div class="alert">${data.error}</div>`;
+                    } else {
+                        searchResults.innerHTML = `
+                            <h3>Search Results</h3>
+                            <ul>
+                                ${data.players.map(player => `
+                                    <li>
+                                        <span>${player.username}</span>
+                                        <button onclick="sendFriendRequest('${player.username}')">Add</button>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        `;
+                    }
+                });
+        });
+
+        // Function to send a friend request
+        function sendFriendRequest(username) {
+            fetch(`/send_friend_request/${username}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.success || data.error);
+            });
+        }
+
+        // Function to accept a friend request
+        function acceptRequest(username) {
+            fetch(`/accept_friend_request/${username}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.success || data.error);
+                // Reload pending requests or update the list after accepting the request
+                location.reload(); // Optional: Can update the list dynamically instead of reloading
+            });
+        }
+
+        // Function to reject a friend request
+        function rejectRequest(username) {
+            fetch(`/reject_friend_request/${username}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.success || data.error);
+                // Reload pending requests or update the list after rejecting the request
+                location.reload(); // Optional: Can update the list dynamically instead of reloading
+            });
+        }
+    </script>
+
+</body>
+</html>

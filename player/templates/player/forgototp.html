@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify OTP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@100;400;600&display=swap" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'developers/css/verifyotp.css' %}">
+    <script src="{% static 'developers/js/verifyotp.js' %}" defer></script>
+    <style>
+        .home-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 10px 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .home-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="{% url 'forgotpassword' %}" class="home-link">Back</a>
+    <section>
+        <div class="container">
+            <h1 class="title">Enter OTP</h1>
+            <form method="POST" action="{% url 'forgototp' %}" id="otpForm">
+                {% csrf_token %}
+                <div id="otp-form">
+                    <input type="text" class="otp-input" name="otp1" maxlength="1" required>
+                    <input type="text" class="otp-input" name="otp2" maxlength="1" required>
+                    <input type="text" class="otp-input" name="otp3" maxlength="1" required>
+                    <input type="text" class="otp-input" name="otp4" maxlength="1" required>
+                    <input type="text" class="otp-input" name="otp5" maxlength="1" required>
+                </div>
+                <button type="submit" id="verify-btn">Verify OTP</button>
+                {% if messages %}
+                    <div class="messages">
+                        {% for message in messages %}
+                            <div class="message {{ message.tags }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </form>
+        </div>
+    </section>
+</body>
+</html>

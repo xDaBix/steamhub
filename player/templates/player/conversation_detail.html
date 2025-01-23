@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #fff;
+        }
+        .container {
+            margin-top: 80px;
+            padding: 20px;
+        }
+        .messages {
+            list-style-type: none;
+            padding: 0;
+            margin-bottom: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .message {
+            background-color: #333;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+        .message.user {
+            background-color: #007bff;
+            align-self: flex-end;
+        }
+        .message.friend {
+            background-color: #28a745;
+            align-self: flex-start;
+        }
+        .chat-box {
+            display: flex;
+            gap: 10px;
+        }
+        .chat-box input {
+            flex: 1;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            color: #000;
+        }
+        .chat-box button {
+            background-color: #28a745;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+        .chat-box button:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Conversation with {{ friend.username }}</h1>
+
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="message {% if message.is_user %}user{% else %}friend{% endif %}">
+                    {{ message.conversation }}
+                    <div><small>{{ message.datetime }}</small></div>
+                </li>
+            {% empty %}
+                <li>No messages yet.</li>
+            {% endfor %}
+        </ul>
+
+        <div class="chat-box">
+            <form method="POST">
+                {% csrf_token %}
+                <input type="text" name="message" placeholder="Type your message..." required>
+                <button type="submit">Send</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

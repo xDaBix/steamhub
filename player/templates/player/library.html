@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Library</title>
+    <style>
+        /* General Page Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #000000; /* Black background */
+            color: white; /* White text color */
+        }
+
+        header {
+            background-color: #222222; /* Darker header background */
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        header nav ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        header nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        header nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        footer {
+            text-align: center;
+            background-color: #222222; /* Darker footer background */
+            color: white;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .game-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .game-item {
+            background-color: #333333; /* Dark background for each game item */
+            border: 1px solid #444444; /* Slightly lighter border */
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .game-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .game-details h3 {
+            margin-top: 10px;
+            font-size: 1.5em;
+            color: white; /* White text color for game title */
+        }
+
+        .game-details p {
+            font-size: 1em;
+            color: #bbb; /* Lighter gray for descriptions */
+        }
+
+        .download-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #28a745; /* Green button */
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .download-btn:hover {
+            background-color: #218838;
+        }
+
+        .game-item p {
+            margin: 10px 0;
+        }
+
+        h2 {
+            font-size: 20px;
+            font-weight: bold;
+            color: #dddddd;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        .home-link {
+            position: absolute;
+            top: 20px; 
+            left: 20px; 
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 10px 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .home-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+    </style>
+</head>
+<body>
+    <a href="{% url 'home' %}" class="home-link">Back</a>
+   
+    <div class="container">
+        <h1>Your Library</h1>
+
+        {% if games %}
+            <div class="game-list">
+                {% for game in games %}
+                    <div class="game-item">
+                        {% if game.images.first %}
+                            <img src="{{ game.images.first.image.url }}" alt="{{ game.title }}" class="game-img">
+                        {% else %}
+                            <img src="/static/default_game_image.jpg" alt="Default Image" class="game-img">
+                        {% endif %}
+                        <div class="game-details">
+                            <h3>{{ game.title }}</h3>
+                            <p>{{ game.description }}</p>
+                            <p><strong>Price:</strong> ₹{{ game.price }}</p>
+                            <a href="{% url 'download_game' game.game_id %}" class="download-btn">Download Game</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>You have no purchased games in your library.</p>
+        {% endif %}
+    </div>
+
+    <footer>
+        <p>&copy; 2024 GameShop. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const downloadButtons = document.querySelectorAll('.download-btn');
+
+            downloadButtons.forEach(button => {
+                button.addEventListener('click', function (e) {
+                    const gameName = this.closest('.game-item').querySelector('h3').innerText;
+                    alert(`Starting download for ${gameName}...`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
