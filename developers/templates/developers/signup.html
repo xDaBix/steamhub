@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Your Account</title>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@100;400;600&display=swap" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'developers/css/style.css' %}">
+    <script src="{% static 'developers/js/validation.js' %}" defer></script>
+</head>
+<body>
+    <a href="{% url 'developer_login' %}" class="home-link">Back</a>
+    <div class="registration-container">
+        <h2>Create Your Account</h2>
+        <form method="POST" action="{% url 'developer_signup' %}" id="dregisterForm">
+            {% csrf_token %}
+            <div class="form-field">
+                {{ form.firstname.label_tag }}
+                {{ form.firstname }}
+                <span id="error_firstname" class="error-message"></span>
+            </div>
+            <div class="form-field">
+                {{ form.lastname.label_tag }}
+                {{ form.lastname }}
+                <span id="error_lastname" class="error-message"></span>
+            </div>
+            <div class="form-field">
+                {{ form.contactno.label_tag }}
+                {{ form.contactno }}
+                <span id="error_contactno" class="error-message"></span>
+            </div>
+            <div class="form-field">
+                {{ form.gender.label_tag }}
+                {{ form.gender }}
+                <span id="error_gender" class="error-message"></span>
+            </div>
+            <div class="form-field">
+                {{ form.date_of_birth.label_tag }}
+                {{ form.date_of_birth }}
+                <span id="error_date_of_birth" class="error-message"></span>
+            </div>
+            <div class="form-field">
+                {{ form.username.label_tag }}
+                {{ form.username }}
+                <span id="error_username" class="error-message"></span>
+            </div>
+            <div class="form-field">
+                {{ form.email.label_tag }}
+                {{ form.email }}
+                <span id="error_email" class="error-message"></span>
+            </div>
+            <div class="form-field">
+                {{ form.password.label_tag }}
+                {{ form.password }}
+                <span id="error_password" class="error-message"></span>
+            </div>
+            <button type="submit" name="register">Continue</button>
+        </form>
+        <a href="{% url 'developer_login' %}" class="help-link">Already Have An Account?</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uploaded Games</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff; /* White background */
+            color: #333; /* Black text */
+        }
+
+        /* Header Styles */
+        .header {
+            background-color: #000; /* Black */
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            font-size: 18px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header a {
+            color: #fff;
+            padding: 12px 20px;
+            text-decoration: none;
+            text-align: center;
+            display: inline-block;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .header a:hover {
+            background-color: #444; /* Dark grey on hover */
+            color: white;
+            border-radius: 4px;
+        }
+
+        /* Main Container */
+        .container {
+            margin: 40px auto;
+            max-width: 1200px;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        /* Game List Styles */
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 40px;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 20px 0;
+            transition: background-color 0.3s ease;
+        }
+
+        li:hover {
+            background-color: #f7f7f7; /* Light grey background on hover */
+        }
+
+        h3 {
+            margin: 0;
+            font-size: 24px;
+            color: #000; /* Black */
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        p {
+            margin: 10px 0;
+            color: #555; /* Grey text for description */
+            line-height: 1.6;
+        }
+
+        h4 {
+            margin: 20px 0 10px;
+            color: #333; /* Dark grey */
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* Game Status Badge */
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 4px;
+            color: white;
+        }
+
+        .status-pending {
+            background-color: #ffc107; /* Yellow for pending */
+        }
+
+        .status-approved {
+            background-color: #28a745; /* Green for approved */
+        }
+
+        .status-rejected {
+            background-color: #dc3545; /* Red for rejected */
+        }
+
+        /* Image Styling */
+        .image-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .image-row img {
+            width: 20%; /* Smaller image size */
+            margin: 5px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+
+        .image-row img:hover {
+            transform: scale(1.1);
+        }
+
+        /* Download Button */
+        .download-link {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #000; /* Black */
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .download-link:hover {
+            background-color: #444; /* Dark grey on hover */
+            transform: scale(1.05);
+        }
+
+        /* Delete Button */
+        .delete-link {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #dc3545; /* Red */
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .delete-link:hover {
+            background-color: #c82333;
+        }
+
+        /* No Games Available */
+        .no-games-message {
+            text-align: center;
+            font-size: 20px;
+            color: #999; /* Light grey */
+            padding: 50px;
+        }
+
+        /* Footer Styles (Optional) */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #000; /* Black footer */
+            color: white;
+            margin-top: 50px;
+        }
+
+        .home-link {
+            position: absolute;
+            top: 20px; /* Spacing from the top */
+            left: 20px; /* Spacing from the left */
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 10px 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        
+        .home-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+    <a href="{% url 'developer_home' %}" class="home-link">Back</a>
+
+        <h1>Uploaded Games</h1>
+        <ul>
+            {% for game in games %}
+            <li>
+                <h3>{{ game.title }} ({{ game.release_date }})</h3>
+                <p>{{ game.description }}</p>
+                <p><strong>Price:</strong> ${{ game.price }}</p>
+
+                <p><strong>Status:</strong>
+                    {% if game.status == 'Approved' %}
+                        <span class="status-badge status-approved">Approved</span>
+                    {% elif game.status == 'Rejected' %}
+                        <span class="status-badge status-rejected">Rejected</span>
+                    {% else %}
+                        <span class="status-badge status-pending">Pending</span>
+                    {% endif %}
+                </p>
+
+                <h4>Images:</h4>
+                <div class="image-row">
+                    {% for image in game.images.all %}
+                    <img src="{{ image.image.url }}" alt="Game Image">
+                    {% empty %}
+                    <p>No images available.</p>
+                    {% endfor %}
+                </div>
+
+                <p><a class="download-link" href="{{ game.game_file.url }}">Download Game</a></p>
+
+
+                <form method="POST" action="{% url 'developer_delete_game' game_id=game.game_id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="delete-link">Delete</button>
+                </form>
+            </li>
+            {% empty %}
+            <li class="no-games-message"><p>No games uploaded yet.</p></li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Your Game Company. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

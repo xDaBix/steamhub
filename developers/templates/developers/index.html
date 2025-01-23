@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steamworks</title>
+    {% load static %}  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        /* General styles */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header styles */
+        header {
+            background-color: #222;
+            color: #fff;
+            padding: 15px 0;
+        }
+        
+        header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .logo {
+            text-decoration: none;
+            color: #fff;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin: 0;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 16px;
+        }
+        
+        .user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .user a {
+            color: #fff;
+            font-size: 20px; 
+            text-decoration: none;
+        }
+
+
+        /* Hero styles */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 50px;
+        }
+
+        .hero-text {
+            width: 50%;
+            padding-right: 20px;
+        }
+
+        .hero-text h1 {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .hero-text p {
+            font-size: 18px;
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }
+
+        .button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+
+        .hero-image {
+            width: 50%;
+        }
+
+        .hero-image img {
+            width: 100%;
+        }
+
+        /* Stats styles */
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 50px;
+            gap: 20px;
+        }
+
+        .stat {
+            width: 30%;
+            text-align: center;
+        }
+
+        .stat img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 20px;
+        }
+
+        .stat h3 {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .stat p {
+            font-size: 16px;
+            color: #666;
+        }
+
+        /* Activate styles */
+        .activate {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .activate h2 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .activate p {
+            font-size: 18px;
+            color: #666;
+        }
+
+        /* Footer styles */
+        footer {
+            background-color: #222;
+            color: #fff;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        footer p {
+            margin: 0;
+        }
+        
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="{% url 'developer_home' %}" class="logo">Steamworks</a>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'developer_home' %}">HomePage</a></li>
+                    <li><a href="{% url 'developer_upload_game' %}">Upload</a></li>
+                    <li><a href="{% url 'developer_game_list' %}">Games</a></li>
+                </ul>
+            </nav>
+            <div class="user">
+                {% if is_logged_in %}
+                    <a href="{% url 'developer_profile' %}">
+                        <i class="fa fa-user-circle"></i>                        
+                    </a>                    
+                    <a href="{% url 'developer_logout' %}">
+                        <i class="fa fa-sign-out" aria-hidden="true"></i>
+                    </a>
+                {% else %}
+                    <a href="{% url 'developer_login' %}">
+                        <i class="fa fa-user-circle"></i> 
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+    
+    <main>
+        <div class="container">
+            <section class="hero">
+                <div class="hero-text">
+                    <h1>Welcome to Steamworks</h1>
+                    <p>Steamworks is a set of tools and services that help game developers and publishers build their games and get the most out of distributing on Steam.</p>
+                    <a href="#" class="button">See what Steamworks has to offer</a>
+                </div>
+                <div class="hero-image">
+                    {% comment %} <img src="{% static '' %}" alt="Steamworks Hero Image"> {% endcomment %}
+                </div>
+            </section>
+
+            <section class="stats">
+                <div class="stat">
+                    <img src="{% static 'developers/images/users.svg' %}" alt="Users">
+                    <h3>132 Million</h3>
+                    <p>Monthly Active Users</p>
+                </div>
+                <div class="stat">
+                    <img src="{% static 'developers/images/impressions.svg' %}" alt="Impressions">
+                    <h3>1 Trillion</h3>
+                    <p>Daily Impressions</p>
+                </div>
+                <div class="stat">
+                    <img src="{% static 'developers/images/players.svg' %}" alt="Online">
+                    <h3>24.2 Million</h3>
+                    <p>Players Online</p>
+                </div>
+            </section>
+
+            <section class="activate">
+                <h2>Activate Windows</h2>
+                <p>Go to Settings to activate Windows.</p>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Steamworks. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

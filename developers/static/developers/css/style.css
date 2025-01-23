@@ -1,0 +1,199 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+    padding: 0;
+}
+
+body {
+    background-color: #000000;
+    padding: 50px 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Urbanist', sans-serif;
+    letter-spacing: 0.07em;
+}
+
+header {
+    background-color: #1a1b1f;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1400px;
+    padding: 20px 40px;
+    border-radius: 20px;
+    box-shadow: 0 50px 100px rgba(0, 0, 0, 0.5);
+    margin-bottom: 50px;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    margin: 0 10px;
+}
+
+nav ul li a {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.registration-container {
+    background-color: #1a1b1f;
+    padding: 60px;
+    text-align: center;
+    width: 60%;
+    max-width: 800px;
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+}
+
+form .form-field {
+    margin-bottom: 1.5rem;  
+}
+
+form .form-field input,
+form .form-field select,
+form .form-field textarea {
+    margin-bottom: 1rem; 
+}
+
+.error-message {
+    color: white;
+}
+
+
+
+.gender-dropdown {
+    margin-bottom: 1rem; 
+}
+
+.registration-container h2 {
+    margin-bottom: 30px;
+}
+
+a.home-link {
+    position: absolute; 
+    top: 20px; 
+    left: 20px; 
+    color: white; 
+    text-decoration: none; 
+    font-weight: bold; 
+}
+
+a.home-link:hover {
+    text-decoration: underline; 
+}
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 30px;
+}
+
+.form-group {
+    width: 48%;
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    text-align: left;
+    font-weight: 600;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"] {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #313237;
+    color: white;
+}
+
+.gender-dropdown {
+    background-color: #313237; 
+    color: white; 
+    border: 1px solid #3482e7; 
+    border-radius: 5px; 
+    padding: 10px; 
+    width: 100%; 
+    font-family: "Urbanist", sans-serif; 
+    font-size: 1rem; 
+    outline: none; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+}
+
+.gender-dropdown:focus {
+    border-color: #3482e7; 
+    background-color: #1a1b1f; 
+    color: white; 
+}
+
+
+button {
+    width: 100%;
+    padding: 15px;
+    background-color: #3482e7;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #4b6611;
+}
+
+.help-link {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    color: #1a73e8;
+    text-decoration: none;
+}
+
+.help-link:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .form-group {
+        width: 100%;
+    }
+
+.error-message {
+    color: red;
+    font-size: 0.875em;
+    display: block;
+    margin-top: 0.25em;
+}
+
+.form-field {
+    margin-bottom: 1em;
+}
+}

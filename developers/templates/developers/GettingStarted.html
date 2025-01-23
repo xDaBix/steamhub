@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getting Started - Steamworks</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header styles */
+        header {
+            background-color: #222;
+            color: #fff;
+            padding: 20px 0;
+            height: 40px;
+        }
+
+        .logo {
+            text-decoration: none;
+            color: #fff;
+            font-size: 24px;
+            font-weight: bold;
+            margin-right: 30px;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        nav li {
+            display: inline-block;
+            margin-right: 30px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .user {
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: auto;
+        }
+
+        .user img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .user span {
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+
+        .user button {
+            background-color: #fff;
+            color: #222;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .user button:hover {
+            background-color: #eee;
+        }
+
+        /* Main styles */
+        main {
+            padding: 50px 0;
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 18px;
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }
+
+        .step {
+            margin-bottom: 50px;
+        }
+
+        .step h2 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .step p {
+            font-size: 18px;
+            line-height: 1.5;
+            color: #666;
+        }
+
+        .step-content {
+            display: none;
+        }
+
+        /* Image styles for steps */
+        .step img {
+            width: 30%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .step img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Form styles */
+        form {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        input, textarea {
+            font-size: 16px;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input[type="file"] {
+            padding: 3px;
+        }
+
+        .submit-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Footer styles */
+        footer {
+            background-color: #222;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        footer p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">Steamworks</a>
+                <ul>
+                    <li><a href="index.html">HomePage</a></li>
+                    <li><a href="GettingStarted.html">Getting Started</a></li>
+                    <li><a href="#">Resources</a></li>
+                    <li><a href="#">News & Updates</a></li>
+                    <li><a href="#">Support</a></li>
+                </ul>
+                <div class="user">
+                    <!-- User section here -->
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>Getting Started</h1>
+            <p>Follow these steps to get your game on Steam and make the most of our platform.</p>
+
+            <div class="step">
+                <h2 onclick="toggleStep(this)">Step 1: Create a Steamworks Account</h2>
+                <div class="step-content">
+                    <p>Sign up for a Steamworks account to access all the tools and features you need to publish your game on Steam.</p>
+                    <img href="Registration.html" src="GettingStarted.png" alt="Create Account">
+                    <a href="Registration.html" class="button">Register Yourself</a>
+                </div>
+            </div>
+
+            <div class="step">
+                <h2 onclick="toggleStep(this)">Step 2: Set Up Your Game</h2>
+                <div class="step-content">
+                    <p>Configure your game's store page, upload assets, and prepare your game for release.</p>
+                    
+                    <form>
+                        <label for="game-title">Game Title</label>
+                        <input type="text" id="game-title" name="game-title" required>
+
+                        <label for="game-description">Game Description</label>
+                        <textarea id="game-description" name="game-description" rows="5" required></textarea>
+
+                        <label for="game-genre">Game Genre</label>
+                        <input type="text" id="game-genre" name="game-genre" required>
+
+                        <label for="game-image">Game Image</label>
+                        <input type="file" id="game-image" name="game-image" accept="image/*" required>
+
+                        <label for="game-file">Game File</label>
+                        <input type="file" id="game-file" name="game-file" accept=".zip,.rar,.exe" required>
+
+                        <button type="submit" class="submit-button">Upload Game</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="step">
+                <h2 onclick="toggleStep(this)">Step 3: Testing</h2>
+                <div class="step-content">
+                    <p>Test your game thoroughly using Steam's testing tools to ensure a smooth launch.</p>
+                    <img src="testing.png" alt="Testing">
+                </div>
+            </div>
+
+            <div class="step">
+                <h2 onclick="toggleStep(this)">Step 4: Launch</h2>
+                <div class="step-content">
+                    <p>Release your game to the public and start engaging with your community.</p>
+                    <img src="launch.png" alt="Launch">
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Steamworks. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleStep(element) {
+            const content = element.nextElementSibling;
+            if (content.style.display === "block") {
+                content.style.display = "none";
+            } else {
+                content.style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>

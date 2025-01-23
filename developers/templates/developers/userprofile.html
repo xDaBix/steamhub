@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% load static %}
+  <title>User Profile</title>
+  <style>
+    body {
+      font-family: 'Urbanist', sans-serif;
+      background: #131519;
+      color: #ffffff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      box-sizing: border-box;
+    }
+    
+    .wrapper {
+      width: 90%;
+      max-width: 600px;
+      height: auto;
+      color: #ffffff;
+      background: #000;
+      font-family: "Century Gothic", Arial, sans-serif;
+      box-sizing: border-box;
+      margin: 0 auto;
+      border: 1px solid #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+      overflow: hidden;
+    }
+    
+    .developer-details {
+      text-align: center;
+      padding: 20px;
+      transition: all .25s ease-in-out;
+      opacity: 1;
+    }
+    
+    .gravatar {
+      width: 150px;
+      height: 150px;
+      margin: 0 auto;
+    }
+    
+    .gravatar img {
+      border-radius: 100%;
+    }
+    
+    .developer-name, .developer-email {
+      margin: 5px 0 0 0;
+    }
+    
+    .developer-email {
+      color: #d0d0d0;
+    }
+    
+    .tabs {
+      background: #333;
+      padding: 10px;
+      border-top: 1px solid #444;
+      border-bottom: 1px solid #444;
+      cursor: pointer;
+    }
+    
+    .tabs h3 {
+      margin: 0;
+      color: #ffffff;
+    }
+    
+    .tabs + .tabs {
+      margin-top: 10px; /* Space between tabs */
+    }
+    
+    .tab-content {
+      display: none;
+      background: #131519;
+      box-sizing: border-box;
+      padding: 15px;
+      border-top: 1px solid #444;
+      flex-direction: column;
+    }
+    
+    .tab-content.expanded {
+      display: flex;
+    }
+    
+    .form-control {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+    
+    .form-control label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #ffffff;
+    }
+    
+    .form-control .textbox {
+      width: 100%;
+      font-size: 14px;
+      border: 1px solid #ffffff;
+      border-radius: 5px;
+      box-sizing: border-box;
+      padding: 10px;
+      background-color: #333;
+      color: #ffffff;
+    }
+    
+    .form-buttons {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .form-buttons button {
+      font-size: 14px;
+      border-radius: 5px;
+      padding: 10px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    
+    .primary-btn {
+      width: 100%;
+      color: #fff;
+      background-image: linear-gradient(to bottom, #5cb6f1, #0d649d);
+      border: 1px solid #0e6aa6;
+      display: block;
+    }
+    
+    .primary-btn:hover {
+      background-image: linear-gradient(to bottom, #4da2db, #0a5781);
+    }
+    
+    .secondary-btn {
+      width: 100%;
+      color: #0e6aa6;
+      background-image: linear-gradient(to bottom, #ffffff, #c4c4c4);
+      border: 1px solid #d0d0d0;
+      display: block;
+    }
+    
+    .secondary-btn:hover {
+      background-image: linear-gradient(to bottom, #e6e6e6, #b3b3b3);
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+      font-weight: normal;
+    }
+    
+    .home-link {
+      position: absolute;
+      top: 20px; /* Spacing from the top */
+      left: 20px; /* Spacing from the left */
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 10px 15px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+    
+    .home-link:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <a href="{% url 'developer_home' %}" class="home-link">Back</a>
+  <div class="wrapper">
+    <div class="developer-details">
+      <div class="gravatar">
+                <i class="fas fa-user-circle" style="font-size: 150px; color: #d0d0d0;"></i>
+      </div>
+      <h2 class="developer-name">{{ developer.first_name }} {{ developer.last_name }}</h2>
+      <p class="developer-email">{{ developer.email }}</p>
+    </div>
+  
+    <div class="forms">
+      <div class="tabs edit-profile">
+          <h3>Edit Profile</h3>
+      </div>
+      <div class="tab-content edit-profile-form-wrap">
+          <form method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <input type="hidden" name="update_profile">
+              
+              <div class="form-control">
+                  <label for="first-name">First Name&#58;</label>
+                  <input type="text" class="textbox" id="first-name" name="first_name" value="{{ developer.first_name }}">
+              </div>
+  
+              <div class="form-control">
+                  <label for="last-name">Last Name&#58;</label>
+                  <input type="text" class="textbox" id="last-name" name="last_name" value="{{ developer.last_name }}">
+              </div>
+              
+              <div class="form-control">
+                  <label for="contact-no">Contact Number&#58;</label>
+                  <input type="text" class="textbox" id="contact-no" name="contact_no" value="{{ developer.contact }}">
+              </div>
+              
+              <div class="form-control">
+                  <label for="dob">Date of Birth&#58;</label>
+                  <input type="date" class="textbox" id="dob" name="dob" value="{{ developer.date_of_birth|date:'Y-m-d' }}">
+              </div>
+  
+              <div class="form-control">
+                <label for="profile-image">Profile Image&#58;</label>
+                <input type="text" class="textbox" value="{% if developer.profile_image %}{{ developer.profile_image.url }}{% else %}No profile image uploaded{% endif %}" disabled>
+                <input type="file" class="textbox" id="profile-image" name="profile_image">
+              </div>
+  
+              <div class="form-buttons">
+                  <button type="submit" class="primary-btn">Update Profile</button>
+                  <button type="button" class="secondary-btn cancel">Cancel</button>
+              </div>
+          </form>
+      </div>
+  
+      <div class="tabs change-password">
+        <h3>Change Password</h3>
+      </div>
+      <div class="tab-content change-password-form-wrap">
+        <form method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="change_password">
+          <div class="form-control">
+            <label for="current-password">Current Password&#58;</label>
+            <input type="password" class="textbox" id="current-password" name="current_password">
+          </div>
+          <div class="form-control">
+            <label for="new-password">New Password&#58;</label>
+            <input type="password" class="textbox" id="new-password" name="new_password">
+          </div>
+          <div class="form-control">
+            <label for="confirm-password">Confirm New Password&#58;</label>
+            <input type="password" class="textbox" id="confirm-password" name="confirm_password">
+          </div>
+          <div class="form-buttons">
+            <button type="submit" class="primary-btn">Change Password</button>
+            <button type="button" class="secondary-btn cancel">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const firstNameInput = document.getElementById("first-name");
+      const lastNameInput = document.getElementById("last-name");
+      const contactNoInput = document.getElementById("contact-no");
+      const dobInput = document.getElementById("dob");
+      const profileImageInput = document.getElementById("profile-image");
+      const cancelButtons = document.querySelectorAll('.cancel');
+      const tabs = document.querySelectorAll('.tabs');
+      const tabContents = document.querySelectorAll('.tab-content');
+  
+      // Toggle tab content display
+      tabs.forEach((tab, index) => {
+        tab.addEventListener('click', () => {
+          tabContents.forEach((content) => {
+            content.classList.remove('expanded');
+          });
+          tabContents[index].classList.add('expanded');
+        });
+      });
+  
+      // Cancel button functionality
+      cancelButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          firstNameInput.value = '';
+          lastNameInput.value = '';
+          contactNoInput.value = '';
+          dobInput.value = '';
+          profileImageInput.value = '';
+        });
+      });
+    });
+  </script>
+</body>
+</html>

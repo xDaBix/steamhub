@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: #1e1e1e;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+        }
+
+        h2, h3 {
+            text-align: center;
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 8px;
+            color: #ffffff;
+            font-size: 16px;
+        }
+
+        input, select, textarea {
+            padding: 10px;
+            background: #2b2b2b;
+            border: 1px solid #444;
+            border-radius: 5px;
+            color: #e0e0e0;
+            font-size: 16px;
+        }
+
+        input[type="file"] {
+            padding: 5px;
+            border: none;
+        }
+
+        button {
+            padding: 12px 20px;
+            background-color: #3a9d58;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            align-self: center;
+        }
+
+        button:hover {
+            background-color: #2e7c46;
+        }
+
+        .notice {
+            text-align: center;
+            color: #f0ad4e;
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-row div {
+            flex: 1;
+        }
+
+        .form-row label {
+            margin-bottom: 5px;
+        }
+
+        .form-row input,
+        .form-row select,
+        .form-row textarea {
+            width: 100%;
+        }
+        
+        .home-link {
+            position: absolute;
+            top: 20px; /* Spacing from the top */
+            left: 20px; /* Spacing from the left */
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 10px 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        
+        .home-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+    <a href="{% url 'developer_home' %}" class="home-link">Back</a>
+
+        <h2>Upload Your Game</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="id_title">Game Title:</label>
+                {{ game_form.title }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_game_type">Game Type:</label>
+                {{ game_form.game_type }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_description">Description:</label>
+                {{ game_form.description }}
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="id_price">Price:</label>
+                    {{ game_form.price }}
+                </div>
+                <div class="form-group">
+                    <label for="id_release_date">Release Date:</label>
+                    {{ game_form.release_date }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="id_version">Game Version:</label>
+                {{ game_form.version }}
+            </div>
+            
+
+            <div class="form-group">
+                <label for="id_game_file">Game File:</label>
+                {{ game_form.game_file }}
+            </div>
+
+            <h3>Upload Images:</h3>
+            {{ image_formset.management_form }}
+            {% for form in image_formset %}
+                <div class="form-group">
+                    {{ form.as_p }}
+                </div>
+            {% endfor %}
+
+            <button type="submit">Upload Game</button>
+        </form>
+    </div>
+</body>
+</html>

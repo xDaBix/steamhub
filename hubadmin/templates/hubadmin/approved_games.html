@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Approved Games</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #fff;
+        }
+
+        .navbar {
+            background-color: #1f1f1f;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        .navbar .title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .navbar .search input {
+            padding: 8px;
+            border: 1px solid #333;
+            border-radius: 4px;
+            background-color: #333;
+            color: #fff;
+        }
+
+        .navbar .user span {
+            color: #fff;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #1f1f1f;
+            padding-top: 20px;
+            position: fixed;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: transform 0.3s ease;
+            top: 0;
+            left: 0;
+        }
+
+        .sidebar .item {
+            padding: 10px 20px;
+            cursor: pointer;
+            color: #fff;
+            transition: background-color 0.3s, transform 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar .item:hover {
+            background-color: #333;
+            transform: scale(1.05);
+        }
+
+        .sidebar .item.active {
+            background-color: #333;
+        }
+
+        .sidebar .text {
+            font-size: 16px;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            transition: margin-left 0.3s ease;
+            margin-top: 80px; /* Prevent content from being hidden under navbar */
+        }
+
+        .content h1, .content h2 {
+            color: #fff;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        table th, table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #333;
+        }
+
+        table th {
+            background-color: #333;
+            color: #fff;
+        }
+
+        table td {
+            background-color: #222;
+            color: #fff;
+        }
+
+        .btn {
+            padding: 8px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 14px;
+            margin-right: 5px;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .mt-3 {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="body">
+        <div class="sidebar">
+            <div class="item {% if active_page == 'dashboard' %}active{% endif %}">
+                <span class="text"><a href="{% url 'admin_dashboard' %}" style="color: white; text-decoration: none;">Dashboard</a></span>
+            </div>
+            <div class="item {% if active_page == 'approved_games' %}active{% endif %}">
+                <span class="text"><a href="{% url 'approved_games' %}" style="color: white; text-decoration: none;">Approved Games</a></span>
+            </div>
+            <div class="item {% if active_page == 'rejected_games' %}active{% endif %}">
+                <span class="text"><a href="{% url 'rejected_games' %}" style="color: white; text-decoration: none;">Rejected Games</a></span>
+            </div>
+            
+            
+            <div class="item">
+                <span class="text"><a href="{% url 'logout' %}" style="color: white; text-decoration: none;">Logout</a></span>
+            </div>
+        </div>
+
+        <div class="content">
+            <h1>Approved Games</h1>
+
+            {% if approved_games %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Developer Name</th>
+                            <th>Game Type</th>
+                            <th>Price</th>
+                            <th>Release Date</th>
+                            <th>Version</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for game in approved_games %}
+                            <tr>
+                                <td>{{ game.title }}</td>
+                                <td>{{ game.developer.first_name }} {{ game.developer.last_name }}</td> <!-- Updated to fetch first and last name -->
+                                <td>{{ game.game_type }}</td>
+                                <td>${{ game.price }}</td>
+                                <td>{{ game.release_date }}</td>
+                                <td>{{ game.version }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No approved games available.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
